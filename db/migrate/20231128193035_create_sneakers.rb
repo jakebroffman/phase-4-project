@@ -6,6 +6,7 @@ class CreateSneakers < ActiveRecord::Migration[7.1]
       t.string :size
       t.string :condition
       t.decimal :retail_price
+      t.string :sneaker_photo_url
 
       t.timestamps
     end
