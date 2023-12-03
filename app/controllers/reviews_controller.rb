@@ -1,38 +1,46 @@
 class ReviewsController < ApplicationController
-    before_action :set_sneaker
-    before_action :set_review, only: [:show, :edit, :update, :destroy]
-  
+    before_action :set_review, only: [:show, :update, :destroy]
+
     def index
-      @reviews = @sneaker.reviews
+      @reviews = Review.all
       render json: @reviews
     end
   
-    def new
-      @review = @sneaker.reviews.build
+    def show
       render json: @review
     end
   
     def create
-      @review = @sneaker.reviews.build(review_params)
+      @review = Review.new(review_params)
+  
       if @review.save
         render json: @review, status: :created
       else
         render json: { errors: @review.errors.full_messages }, status: :unprocessable_entity
       end
     end
+ 
+    def update
+      if @review.update(review_params)
+        render json: @review
+      else
+        render json: { errors: @review.errors.full_messages }, status: :unprocessable_entity
+      end
+    end
+
+    def destroy
+      @review.destroy
+      head :no_content
+    end
   
     private
   
-    def set_sneaker
-      @sneaker = Sneaker.find(params[:sneaker_id])
-    end
-  
     def set_review
-      @review = @sneaker.reviews.find(params[:id])
+      @review = Review.find(params[:id])
     end
   
     def review_params
-      params.require(:review).permit(:user_id, :rating, :comment)
+      params.require(:review).permit(:rating, :comment, :user_id, :sneaker_id)
     end
   end
   
