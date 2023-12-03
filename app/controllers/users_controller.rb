@@ -1,19 +1,16 @@
 class UsersController < ApplicationController
-    before_action :set_user, only: [:show, :edit, :update, :destroy]
-  
-    def index
-      @users = User.all
-      render json: @users
-    end
+    before_action :set_user, only: [ :update, :destroy]
   
     def show
-      render json: @user
+        @user = User.find_by(id: session[:user_id])
+        if @user
+          render json: user
+        else
+          render json: { error: "Not authorized" }, status: :unauthorized
+        end
+      end
     end
   
-    def new
-      @user = User.new
-      render json: @user
-    end
   
     def create
       @user = User.new(user_params)
@@ -22,10 +19,6 @@ class UsersController < ApplicationController
       else
         render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
       end
-    end
-  
-    def edit
-      render json: @user
     end
   
     def update
@@ -44,7 +37,7 @@ class UsersController < ApplicationController
     private
   
     def set_user
-      @user = User.find(params[:id])
+      @user = User.find_by(id: session[:user_id])
     end
   
     def user_params
