@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
     before_action :authenticate_user!, only: :destroy
   
-    def create
+    def login
       @user = User.find_by(username: params[:username])
   
       if @user&.authenticate(params[:password])
@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
       end
     end
   
-    def destroy
+    def logout
       session.delete :user_id
       head :no_content
     end
