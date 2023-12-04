@@ -10,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_28_193215) do
+ActiveRecord::Schema[7.1].define(version: 2023_11_28_233141) do
   create_table "reviews", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "sneaker_id", null: false
+    t.integer "user_id"
+    t.integer "sneaker_id"
     t.integer "rating"
     t.text "comment"
     t.datetime "created_at", null: false
@@ -28,6 +28,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_28_193215) do
     t.string "size"
     t.string "condition"
     t.decimal "retail_price"
+    t.string "photo_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -37,7 +38,6 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_28_193215) do
     t.string "email"
     t.string "password"
     t.string "profile_photo_url"
-    t.string "bio"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
