@@ -11,3 +11,95 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.navbar {
+  background-color: #333;
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 1rem;
+  font-size: 1.2rem;
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+  color: #ffcc00;
+}
+
+.nav-link:last-child {
+  margin-left: auto; 
+}
+
+.notebook-paper {
+  background-color: #fff; 
+  border: 1px solid #ccc; 
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.notebook-paper h2 {
+  color: #333; 
+  margin-bottom: 10px;
+  font-size: 24px;
+}
+
+.notebook-paper p {
+  color: #555; 
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.sneaker-page {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+
+.sneaker-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+ion: transform 0.3s ease-in-out;
+}
+
+.sneaker-card:hover {
+  transform: scale(1.05);
+}
+
+.sneaker-card h3 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.sneaker-card:hover {
+  transform: scale(1.05);
+}
+
+.sneaker-card h3 {
+  font-size: 24px; /* Larger font size */
+  color: #333;
+  margin-bottom: 8px;
+  font-family: 'Roboto', sans-serif; /* Cool font-family, adjust as needed */
+}
+
+.sneaker-card p {
+  font-size: 18px; /* Larger font size */
+  color: #555;
+  margin-bottom: 12px;
+}
+
+.sneaker-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}

@@ -1,5 +1,6 @@
 class SneakersController < ApplicationController
     before_action :set_sneaker, only: [:show, :update, :destroy]
+    before_action :authenticate_user!, only: [:destroy]
 
     def index
       @sneakers = Sneaker.all
