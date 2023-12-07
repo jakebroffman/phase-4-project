@@ -68,7 +68,14 @@ code {
   gap: 20px;
 }
 
-ion: transform 0.3s ease-in-out;
+.sneaker-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+  text-align: center; /* Center text */
 }
 
 .sneaker-card:hover {
@@ -76,29 +83,93 @@ ion: transform 0.3s ease-in-out;
 }
 
 .sneaker-card h3 {
-  font-size: 20px;
+  font-size: 24px; 
   color: #333;
   margin-bottom: 8px;
-}
-
-.sneaker-card:hover {
-  transform: scale(1.05);
-}
-
-.sneaker-card h3 {
-  font-size: 24px; /* Larger font size */
-  color: #333;
-  margin-bottom: 8px;
-  font-family: 'Roboto', sans-serif; /* Cool font-family, adjust as needed */
+  font-family: 'Roboto', sans-serif; 
 }
 
 .sneaker-card p {
-  font-size: 18px; /* Larger font size */
+  font-size: 18px; 
   color: #555;
   margin-bottom: 12px;
 }
 
 .sneaker-card img {
+  max-width: 75%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.sign-in {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.sign-in-form {
+  max-width: 300px;
+  margin: auto;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sign-in-form h2 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.sign-in-form label {
+  display: block;
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.sign-in-form input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.sign-in-form button {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 12px;
+  font-size: 18px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.sneaker-detail {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.sneaker-detail h2 {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+.sneaker-detail p {
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.sneaker-detail img {
   max-width: 100%;
   height: auto;
   border-radius: 4px;
