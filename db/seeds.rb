@@ -6,11 +6,11 @@ user4 = User.create(username: 'alice_wonder', email: 'alice@example.com', passwo
 user5 = User.create(username: 'charlie_brown', email: 'charlie@example.com', password: 'peanuts', profile_photo_url: 'https://example.com/charlie.jpg')
 
 # Create sneakers with retail prices and photo URLs
-sneaker1 = Sneaker.create(brand: 'Nike', model: 'Air Jordan 1', size: '10', condition: 'New', retail_price: 170.0, photo_url: 'https://example.com/sneaker1.jpg')
-sneaker2 = Sneaker.create(brand: 'Adidas', model: 'Yeezy Boost 350', size: '9.5', condition: 'New', retail_price: 220.0, photo_url: 'https://example.com/sneaker2.jpg')
-sneaker3 = Sneaker.create(brand: 'Puma', model: 'Puma Suede Classic', size: '9', condition: 'New', retail_price: 60.0, photo_url: 'https://example.com/sneaker3.jpg')
-sneaker4 = Sneaker.create(brand: 'Converse', model: 'Chuck Taylor All Star', size: '8', condition: 'New', retail_price: 55.0, photo_url: 'https://example.com/sneaker4.jpg')
-sneaker5 = Sneaker.create(brand: 'Reebok', model: 'Classic Leather', size: '10.5', condition: 'New', retail_price: 80.0, photo_url: 'https://example.com/sneaker5.jpg')
+sneaker1 = Sneaker.create(brand: 'Nike', model: 'Air Jordan 1', size: '10', condition: 'New', retail_price: 170.0, photo_url: 'https://poddleshop.com/wp-content/uploads/2023/10/poddleshop-27-scaled-poddleshop-Untitled-poddleshop.jpg')
+sneaker2 = Sneaker.create(brand: 'Adidas', model: 'Yeezy Boost 350', size: '9.5', condition: 'New', retail_price: 220.0, photo_url: 'https://www.cottonnovas.com/cdn/shop/files/2790fb642878a83a5839f167686257fe.jpg?v=1692669435&width=1400')
+sneaker3 = Sneaker.create(brand: 'Puma', model: 'Puma Suede Classic', size: '9', condition: 'New', retail_price: 60.0, photo_url: 'https://images.journeys.com/images/products/1_647848_ZM_THERO.JPG')
+sneaker4 = Sneaker.create(brand: 'Converse', model: 'Chuck Taylor All Star', size: '8', condition: 'New', retail_price: 55.0, photo_url: 'https://www.converse.com/dw/image/v2/BCZC_PRD/on/demandware.static/-/Sites-cnv-master-catalog/default/dw6217c85c/images/a_107/3J231_A_107X1.jpg?sw=964')
+sneaker5 = Sneaker.create(brand: 'Reebok', model: 'Classic Leather', size: '10.5', condition: 'New', retail_price: 80.0, photo_url: 'https://images.dsw.com/is/image/DSWShoes/523137_100_ss_01?impolicy=qlt-medium-high&imwidth=640&imdensity=2')
 
 # Create reviews
 review1 = Review.create(user: user1, sneaker: sneaker1, rating: 4, comment: 'Great shoes!')
