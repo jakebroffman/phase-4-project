@@ -17,12 +17,13 @@ function SignUpPage() {
 
 
   return (
-    <div>
+    <div className="sign-up-form">
       <h2>Sign Up</h2>
       <form>
         <label>
           Username:
           <input
+            className='form-input'
             type="text"
             name="username"
             value={formData.username}
@@ -33,6 +34,7 @@ function SignUpPage() {
         <label>
           Email:
           <input
+            className='form-input'
             type="email"
             name="email"
             value={formData.email}
@@ -43,6 +45,7 @@ function SignUpPage() {
         <label>
           Password:
           <input
+            className='form-input'
             type="password"
             name="password"
             value={formData.password}
@@ -53,6 +56,7 @@ function SignUpPage() {
         <label>
           Confirm Password:
           <input
+            className='form-input'
             type="password"
             name="passwordConfirmation"
             value={formData.passwordConfirmation}
@@ -60,7 +64,7 @@ function SignUpPage() {
           />
         </label>
         <br />
-        <button type="submit">Sign Up</button>
+        <button type="submit" className='form-button'>Sign Up</button>
       </form>
     </div>
   );
