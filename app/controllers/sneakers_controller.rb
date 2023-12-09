@@ -1,5 +1,5 @@
 class SneakersController < ApplicationController
-    before_action :set_sneaker, only: [:show, :update, :destroy]
+    before_action :set_sneaker, only: [:show, :update, :destroy, :custom_show]
     before_action :authenticate_user!, only: [:destroy]
 
     def index
@@ -9,6 +9,10 @@ class SneakersController < ApplicationController
   
     def show
       render json: @sneaker
+    end
+
+    def custom_show
+      render json: @sneaker, include: :reviews
     end
 
     def create

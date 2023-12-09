@@ -1,9 +1,11 @@
 Rails.application.routes.draw do
   resources :reviews
   resources :sneakers do
-    resources :reviews, only: [:index, :new, :create]
+    resources :reviews, only: [:index, :create]
   end
   resources :users
+  
+  get '/sneakers/:id', to: 'sneakers#custom_show', as: 'custom_sneaker_show'
   post '/login', to: 'sessions#login'
   delete '/logout', to: 'sessions#logout'
 
