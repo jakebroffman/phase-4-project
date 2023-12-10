@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 
-function SignInPage() {
+function SignInPage( {isLoggedIn, setCurrentUser} ) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -19,7 +19,7 @@ function SignInPage() {
     })
       .then((response) => response.json())
       .then((data) => 
-        {console.log(data);
+        {setCurrentUser(data);
     })
       .catch((error) => {
         console.error('Error:', error);
@@ -58,3 +58,4 @@ function SignInPage() {
 }
 
 export default SignInPage;
+
