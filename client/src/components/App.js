@@ -30,14 +30,14 @@ function App() {
     <Router>
       <div>
         <UserContext.Provider value ={{currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn}}>
-          <NavBar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
+          <NavBar />
           <Routes>
-            <Route path="/" element={<HomePage isLoggedIn = {isLoggedIn}/>} />
-            <Route path="/sneakers" element={<SneakerPage isLoggedIn = {isLoggedIn}/>} />
-            <Route path="/signup" element={<SignUpPage isLoggedIn = {isLoggedIn}/>} />
-            <Route path="/signin" element={<SignInPage setCurrentUser = {setCurrentUser} setIsLoggedIn={setIsLoggedIn}/>} />
-            <Route path="/sneakers/:id" element={<SneakerDetail isLoggedIn = {isLoggedIn}/>} />
-            <Route path="/signout" element={<SignOutPage setIsLoggedIn = {setIsLoggedIn} isLoggedIn={isLoggedIn} setCurrentUser={setCurrentUser}/>} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/sneakers" element={<SneakerPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/signin" element={<SignInPage />} />
+            <Route path="/sneakers/:id" element={<SneakerDetail />} />
+            <Route path="/signout" element={<SignOutPage />} />
           </Routes>
         </UserContext.Provider> 
       </div>

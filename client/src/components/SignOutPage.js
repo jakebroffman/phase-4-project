@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import SignInPage from './SignInPage';
+import UserContext from './UserContext';
 
-function SignOutPage({ setIsLoggedIn }) {
+function SignOutPage() {
+
+  const { setIsLoggedIn, isLoggedIn } = useContext(UserContext);
+
   const handleLogOutClick = () => {
     fetch('/logout', {
       method: 'POST', 
@@ -22,10 +27,18 @@ function SignOutPage({ setIsLoggedIn }) {
 
   return (
     <div className="sign-out">
-      <p>Farewell! We hope to see you again soon.</p>
-      <button onClick={handleLogOutClick}>Log Out</button>
+      {isLoggedIn ? (
+        <>
+          <p>Farewell! We hope to see you again soon.</p>
+          <button onClick={handleLogOutClick}>Log Out</button>
+        </>
+      ) : (
+        <SignInPage />
+      )}
     </div>
   );
 }
+
+
 
 export default SignOutPage;

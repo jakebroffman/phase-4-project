@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import UserContext from './UserContext';
 
-
-function SignInPage( {isLoggedIn, setCurrentUser} ) {
+function SignInPage( ) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { setIsLoggedIn, setCurrentUser } = useContext(UserContext);
+  const navigate = useNavigate
 
 
   const handleFormSubmit = (e) => {
@@ -20,6 +23,8 @@ function SignInPage( {isLoggedIn, setCurrentUser} ) {
       .then((response) => response.json())
       .then((data) => 
         {setCurrentUser(data);
+         setIsLoggedIn(true);
+         navigate.push('/')
     })
       .catch((error) => {
         console.error('Error:', error);
