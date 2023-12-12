@@ -6,7 +6,7 @@ function SignInPage( ) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { setIsLoggedIn, setCurrentUser } = useContext(UserContext);
-  const navigate = useNavigate
+  const navigate = useNavigate();
 
 
   const handleFormSubmit = (e) => {
@@ -23,8 +23,8 @@ function SignInPage( ) {
       .then((response) => response.json())
       .then((data) => 
         {setCurrentUser(data);
-         setIsLoggedIn(true);
-         navigate.push('/')
+         setIsLoggedIn(!setIsLoggedIn);
+         navigate('/')
     })
       .catch((error) => {
         console.error('Error:', error);

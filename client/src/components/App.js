@@ -8,6 +8,7 @@ import SignInPage from "./SignInPage";
 import SneakerDetail from "./SneakerDetail"
 import SignOutPage from "./SignOutPage";
 import UserContext from "./UserContext";
+import SneakersContext from "./SneakersContext";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -18,6 +19,14 @@ function App() {
     profile_photo_url: '',
     reviews: [],
   });
+  const [sneakers, setSneakers] = useState([]);
+
+  useEffect(() => {
+    fetch('/sneakers')
+      .then((r) => r.json())
+      .then((data) => setSneakers(data));
+  }, []);
+
   
   useEffect(() => {
     if (currentUser !== null && currentUser !== undefined) {
@@ -29,17 +38,20 @@ function App() {
   return (
     <Router>
       <div>
-        <UserContext.Provider value ={{currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn}}>
-          <NavBar />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/sneakers" element={<SneakerPage />} />
-            <Route path="/signup" element={<SignUpPage />} />
-            <Route path="/signin" element={<SignInPage />} />
-            <Route path="/sneakers/:id" element={<SneakerDetail />} />
-            <Route path="/signout" element={<SignOutPage />} />
-          </Routes>
-        </UserContext.Provider> 
+        <SneakersContext.Provider value ={{sneakers, setSneakers}}>
+          <UserContext.Provider value ={{currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn}}>
+            <NavBar />
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/sneakers" element={<SneakerPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
+              <Route path="/signin" element={<SignInPage />} />
+              <Route path="/sneakers/:id" element={<SneakerDetail />} />
+              <Route path="/signout" element={<SignOutPage />} />
+              <Route path="editprofile" />
+            </Routes>
+          </UserContext.Provider>
+        </SneakersContext.Provider>
       </div>
     </Router>
   );

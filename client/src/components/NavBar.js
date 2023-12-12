@@ -10,12 +10,12 @@ function NavBar() {
       <Link to="/" className="nav-link">Home</Link>
       <Link to="/sneakers" className="nav-link">Sneakers</Link>
       {isLoggedIn ? (
-        <Link to="/editprofile" className="nav-link">Edit Profile</Link>
+        <Link to="/editprofile" className="nav-link">Edit Profile</Link>   
       ) : (
-        <Link to="/signup" className="nav-link">Sign Up</Link>
+        <Link to="/signup" className="nav-link">Sign Up</Link> 
       )}
       {isLoggedIn ? (
-        <Link to="/signout" className="nav-link">Sign Out</Link>
+        <Link to="/signout" className="nav-link">Sign Out</Link>    
       ) : (
         <Link to="/signin" className="nav-link">Sign In</Link>
       )}
@@ -24,3 +24,5 @@ function NavBar() {
 }
 
 export default NavBar;
+
+<Link to="/editprofile" className="nav-link">Edit Profile</Link>

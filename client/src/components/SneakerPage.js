@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import SneakerContext from './SneakersContext';
 
 function SneakerPage() {
-  const [sneakers, setSneakers] = useState([]);
-
-  useEffect(() => {
-    fetch('/sneakers')
-      .then((r) => r.json())
-      .then((data) => setSneakers(data));
-  }, []);
+const { sneakers } = useContext(SneakerContext);
 
   return (
     <div>

@@ -4,7 +4,7 @@ import UserContext from './UserContext';
 
 function SignOutPage() {
 
-  const { setIsLoggedIn, isLoggedIn } = useContext(UserContext);
+  const { setIsLoggedIn, isLoggedIn, currentUser } = useContext(UserContext);
 
   const handleLogOutClick = () => {
     fetch('/logout', {
@@ -15,9 +15,10 @@ function SignOutPage() {
     })
       .then((response) => {
         if (response.ok) {
-          setIsLoggedIn(false);
+          setIsLoggedIn(!isLoggedIn);
         } else {
           console.error('Failed to log out');
+          console.log(currentUser)
         }
       })
       .catch((error) => {
@@ -29,16 +30,15 @@ function SignOutPage() {
     <div className="sign-out">
       {isLoggedIn ? (
         <>
-          <p>Farewell! We hope to see you again soon.</p>
-          <button onClick={handleLogOutClick}>Log Out</button>
-        </>
+        <p>Farewell! We hope to see you again soon.</p>
+        <button onClick={handleLogOutClick}>Log Out</button>
+      </>
       ) : (
-        <SignInPage />
+       <SignInPage />
       )}
     </div>
   );
 }
 
-
-
 export default SignOutPage;
+<SignInPage />

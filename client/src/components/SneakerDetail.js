@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom';
+import SneakersContext from './SneakersContext';
 
 function SneakerDetail() {
   const { id } = useParams();
-  const [sneaker, setSneaker] = useState(null);
+  const { sneakers } = useContext(SneakersContext);
 
-  useEffect(() => {
-
-    fetch(`/sneakers/${id}`)
-      .then((response) => response.json())
-      .then((data) => setSneaker(data))
-  }, [id]);
+  const sneaker = sneakers.find((s) => s.id === parseInt(id));
 
   if (!sneaker) {
     return <p>Loading...</p>;
@@ -27,7 +23,6 @@ function SneakerDetail() {
         <h3 className="reviews-heading">Reviews</h3>
         {sneaker.reviews.map((review) => (
           <div key={review.id} className="review-card">
-            <h4>User: {review.user}</h4>
             <p>Rating: {review.rating}</p>
             <p>Comment: {review.comment}</p>
           </div>
