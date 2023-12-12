@@ -11,8 +11,7 @@ function SignInPage( ) {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-
-    
+  
     fetch('/login', {
       method: 'POST',
       headers: {
@@ -20,16 +19,22 @@ function SignInPage( ) {
       },
       body: JSON.stringify({ username, password }),
     })
-      .then((response) => response.json())
-      .then((data) => 
-        {setCurrentUser(data);
-         setIsLoggedIn(!setIsLoggedIn);
-         navigate('/')
-    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setCurrentUser(data);
+        setIsLoggedIn(true);
+        navigate('/');
+      })
       .catch((error) => {
         console.error('Error:', error);
       });
   };
+  
 
   return (
     <div className="sign-in">
