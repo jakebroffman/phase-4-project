@@ -26,11 +26,13 @@ function App() {
       .then((r) => r.json())
       .then((data) => setSneakers(data));
   }, []);
-
   
   useEffect(() => {
-    if (currentUser !== null && currentUser !== undefined) {
-      console.log(currentUser)
+    if (
+      currentUser &&
+      Object.values(currentUser).every((value) => value !== null && value !== undefined && value !== "")
+    ) {
+      console.log(currentUser);
       setIsLoggedIn(true);
     }
   }, [currentUser, setIsLoggedIn]);
@@ -48,7 +50,7 @@ function App() {
               <Route path="/signin" element={<SignInPage />} />
               <Route path="/sneakers/:id" element={<SneakerDetail />} />
               <Route path="/signout" element={<SignOutPage />} />
-              <Route path="editprofile" />
+              <Route path="/editprofile" />
             </Routes>
           </UserContext.Provider>
         </SneakersContext.Provider>
