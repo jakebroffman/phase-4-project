@@ -10,7 +10,7 @@ function NavBar() {
       <Link to="/" className="nav-link">Home</Link>
       <Link to="/sneakers" className="nav-link">Sneakers</Link>
       {isLoggedIn ? (
-        <Link to="/editprofile" className="nav-link">Edit Profile</Link>   
+        <Link to="/userprofile" className="nav-link">Edit Profile</Link>   
       ) : (
         <Link to="/signup" className="nav-link">Sign Up</Link> 
       )}

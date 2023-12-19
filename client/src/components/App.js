@@ -9,6 +9,7 @@ import SneakerDetail from "./SneakerDetail"
 import SignOutPage from "./SignOutPage";
 import UserContext from "./UserContext";
 import SneakersContext from "./SneakersContext";
+import UserProfile from "./UserProfile";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -50,7 +51,7 @@ function App() {
               <Route path="/signin" element={<SignInPage />} />
               <Route path="/sneakers/:id" element={<SneakerDetail />} />
               <Route path="/signout" element={<SignOutPage />} />
-              <Route path="/editprofile" />
+              <Route path="/userprofile" element={<UserProfile />} />
             </Routes>
           </UserContext.Provider>
         </SneakersContext.Provider>

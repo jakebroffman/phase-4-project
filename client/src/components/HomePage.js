@@ -10,7 +10,7 @@ function HomePage() {
   <div>
     {isLoggedIn ? (
       <div className='notebook-paper'>
-        <h2>Welcome to Sneaker World, {currentUser.username} !</h2>
+        <h2>Welcome to Sneaker World, {currentUser.username}!</h2>
         <p>Sneaker World is a community built for sneaker enthusiasts by sneaker enthusiasts. Together we can come together to find the latest in the ever changing world of sneakers and collecting. Create an account, join the community, stay up to date on new and limited releases, leave reviews for other members to check out and decide whether or not they want to add them to their collection. Future expansions will allow users to track their collection as well as buy, sell, and trade with other Sneaker World members!</p>
       </div>
     ) : (
