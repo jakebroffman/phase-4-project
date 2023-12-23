@@ -1,20 +1,25 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import SneakerContext from './SneakersContext';
-import SneakerForm from './SneakerForm'; // Import the SneakerForm component
+import SneakerForm from './SneakerForm';
+import UserContext from './UserContext';
 
 function SneakerPage() {
   const { sneakers } = useContext(SneakerContext);
+  const { isLoggedIn } = useContext(UserContext);
   const [isFormVisible, setIsFormVisible] = useState(false);
-
 
   return (
     <div>
       <h2>All Sneakers</h2>
-      <button onClick={() => setIsFormVisible(!isFormVisible)}>Add Sneaker to the Database</button>
-      
+      {isLoggedIn && (
+        <button onClick={() => setIsFormVisible(!isFormVisible)}>
+          Add Sneaker to the Database
+        </button>
+      )}
+
       {isFormVisible && <SneakerForm />}
-      
+
       <div className="sneaker-list">
         {sneakers.map((sneaker) => (
           <Link key={sneaker.id} to={`/sneakers/${sneaker.id}`} className="sneaker-card">
