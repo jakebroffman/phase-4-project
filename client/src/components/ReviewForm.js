@@ -1,13 +1,23 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import SneakersContext from './SneakersContext';
 
-function ReviewForm({ sneakerId }) {
+function ReviewForm({ sneakerId, editReviewData, onCancel }) {
   const { setSneakers } = useContext(SneakersContext);
   const [formData, setFormData] = useState({
     rating: '',
     comment: '',
   });
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Set form data with values from the editReviewData when editing
+    if (editReviewData) {
+      setFormData({
+        rating: String(editReviewData.rating),
+        comment: editReviewData.comment,
+      });
+    }
+  }, [editReviewData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,8 +31,14 @@ function ReviewForm({ sneakerId }) {
     e.preventDefault();
 
     try {
-      const response = await fetch(`/sneakers/${sneakerId}/reviews`, {
-        method: 'POST',
+      const url = editReviewData
+        ? `/reviews/${editReviewData.id}`
+        : `/sneakers/${sneakerId}/reviews`;
+
+      const method = editReviewData ? 'PATCH' : 'POST';
+
+      const response = await fetch(url, {
+        method,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -30,22 +46,34 @@ function ReviewForm({ sneakerId }) {
       });
 
       if (response.ok) {
-        const newReview = await response.json();
+        const updatedReview = await response.json();
+
         setSneakers((prevSneakers) =>
           prevSneakers.map((sneaker) =>
             sneaker.id === sneakerId
-              ? { ...sneaker, reviews: [...sneaker.reviews, newReview] }
+              ? {
+                  ...sneaker,
+                  reviews: editReviewData
+                    ? sneaker.reviews.map((review) =>
+                        review.id === updatedReview.id ? updatedReview : review
+                      )
+                    : [...sneaker.reviews, updatedReview],
+                }
               : sneaker
           )
         );
+
         setFormData({
-            rating: '',
-            comment: '',
-          });
-        console.log('Review added successfully!');
+          rating: '',
+          comment: '',
+        });
+
+        onCancel(); // Close the form
+
+        console.log('Review added/updated successfully!');
       } else {
         const errorData = await response.json();
-        setError(errorData.message || 'Failed to add review to the database');
+        setError(errorData.message || 'Failed to add/update review');
       }
     } catch (error) {
       console.error('Error:', error);
@@ -59,15 +87,15 @@ function ReviewForm({ sneakerId }) {
       <form className="review-form" onSubmit={handleSubmit}>
         <label>
           Rating:
-            <input
-                type="number"
-                name="rating"
-                value={formData.rating}
-                onChange={handleChange}
-                min="1"
-                max="5"
-                className="form-input"
-            />
+          <input
+            type="number"
+            name="rating"
+            value={formData.rating}
+            onChange={handleChange}
+            min="1"
+            max="5"
+            className="form-input"
+          />
         </label>
         <label>
           Comment:
@@ -79,7 +107,7 @@ function ReviewForm({ sneakerId }) {
           />
         </label>
         <button type="submit" className="form-button">
-          Submit Review
+          {editReviewData ? 'Update Review' : 'Submit Review'}
         </button>
       </form>
     </div>

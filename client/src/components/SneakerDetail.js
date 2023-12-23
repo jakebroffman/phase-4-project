@@ -6,7 +6,7 @@ import UserContext from './UserContext';
 
 function SneakerDetail() {
   const { id } = useParams();
-  const { sneakers } = useContext(SneakersContext);
+  const { sneakers, setSneakers } = useContext(SneakersContext);
   const { currentUser } = useContext(UserContext);
 
   const sneaker = sneakers.find((s) => s.id === parseInt(id));
@@ -17,14 +17,41 @@ function SneakerDetail() {
 
   const toggleReviewForm = (review) => {
     setIsReviewFormVisible(!isReviewFormVisible);
-    setIsEditFormVisible(false); 
+    setIsEditFormVisible(false);
     setEditReviewData(review);
   };
 
   const toggleEditForm = (review) => {
     setIsEditFormVisible(!isEditFormVisible);
-    setIsReviewFormVisible(false); 
+    setIsReviewFormVisible(false);
     setEditReviewData(review);
+  };
+
+  const handleDeleteReview = async (reviewId) => {
+    try {
+      const response = await fetch(`/reviews/${reviewId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (response.ok) {
+        setSneakers((prevSneakers) => {
+          const updatedSneakers = prevSneakers.map((sneaker) => ({
+            ...sneaker,
+            reviews: sneaker.reviews.filter((r) => r.id !== reviewId),
+          }));
+          return updatedSneakers;
+        });
+  
+        console.log('Review deleted successfully!');
+      } else {
+        console.error('Failed to delete review');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   if (!sneaker) {
@@ -38,7 +65,9 @@ function SneakerDetail() {
       <p>Condition: {sneaker.condition}</p>
       <img src={sneaker.photo_url} alt={`${sneaker.brand} ${sneaker.model}`} />
 
-      <button onClick={() => toggleReviewForm(null)}>Leave A Review</button>
+      {currentUser !== null && (
+        <button onClick={() => toggleReviewForm(null)}>Leave A Review</button>
+      )}
 
       {isReviewFormVisible && (
         <ReviewForm
@@ -54,9 +83,10 @@ function SneakerDetail() {
           <div key={review.id} className="review-card">
             <p>Rating: {review.rating}</p>
             <p>Comment: {review.comment}</p>
-            {currentUser && currentUser.id === review.user_id && (
+            {currentUser !== null && currentUser.id === review.user_id && (
               <div>
                 <button onClick={() => toggleEditForm(review)}>Edit</button>
+                <button onClick={() => handleDeleteReview(review.id)}>Delete</button>
                 {isEditFormVisible && editReviewData && editReviewData.id === review.id && (
                   <ReviewForm
                     sneakerId={sneaker.id}
