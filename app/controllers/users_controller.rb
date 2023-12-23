@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:update, :destroy]
   skip_before_action :authenticate_user!, only: [:create]
-
+## what happens if i remove @user and replace with @currentUser 
   def show
     @user = User.find_by(id: session[:user_id])
     if @user
@@ -40,6 +40,8 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:username, :email, :password, :profile_photo_url)
+    permitted_params = [:username, :email, :profile_photo_url]
+    permitted_params << :password if action_name == 'create'
+    params.require(:user).permit(permitted_params)
   end
 end

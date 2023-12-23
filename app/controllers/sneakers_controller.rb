@@ -8,7 +8,9 @@ class SneakersController < ApplicationController
     end
   
     def show
-      render json: @sneaker
+      byebug
+      @sneaker = Sneaker.includes(reviews: :user).find(params[:id])
+      render json: @sneaker, include: { reviews: {include: :user} }
     end
 
     def custom_show
