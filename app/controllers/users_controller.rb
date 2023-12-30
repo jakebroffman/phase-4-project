@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:update, :destroy]
   skip_before_action :authenticate_user!, only: [:create]
-## what happens if i remove @user and replace with @currentUser 
+
   def show
     @user = User.find_by(id: session[:user_id])
     if @user
