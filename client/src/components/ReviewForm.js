@@ -10,7 +10,6 @@ function ReviewForm({ sneakerId, editReviewData, onCancel }) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Set form data with values from the editReviewData when editing
     if (editReviewData) {
       setFormData({
         rating: String(editReviewData.rating),
@@ -68,7 +67,7 @@ function ReviewForm({ sneakerId, editReviewData, onCancel }) {
           comment: '',
         });
 
-        onCancel(); // Close the form
+        onCancel();
 
         console.log('Review added/updated successfully!');
       } else {
