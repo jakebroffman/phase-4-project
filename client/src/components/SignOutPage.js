@@ -4,7 +4,7 @@ import UserContext from './UserContext';
 
 function SignOutPage() {
 
-  const { setIsLoggedIn, isLoggedIn, currentUser } = useContext(UserContext);
+  const { setIsLoggedIn, isLoggedIn, setCurrentUser, currentUser } = useContext(UserContext);
 
   const handleLogOutClick = () => {
     fetch('/logout', {
@@ -16,6 +16,7 @@ function SignOutPage() {
       .then((response) => {
         if (response.ok) {
           setIsLoggedIn(!isLoggedIn);
+          setCurrentUser(null);
         } else {
           console.error('Failed to log out');
           console.log(currentUser)
