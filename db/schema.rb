@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_05_215153) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_23_004755) do
   create_table "reviews", force: :cascade do |t|
     t.integer "user_id"
     t.integer "sneaker_id"
@@ -31,6 +31,8 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_05_215153) do
     t.string "photo_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.index ["user_id"], name: "index_sneakers_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -45,4 +47,5 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_05_215153) do
 
   add_foreign_key "reviews", "sneakers"
   add_foreign_key "reviews", "users"
+  add_foreign_key "sneakers", "users"
 end
