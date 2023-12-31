@@ -25,7 +25,10 @@ function App() {
   useEffect(() => {
     fetch('/sneakers')
       .then((r) => r.json())
-      .then((data) => setSneakers(data));
+      .then((data) => {
+        console.log("Sneakers API Response:", data);
+        setSneakers(data);
+      })
   }, []);
   
   useEffect(() => {
