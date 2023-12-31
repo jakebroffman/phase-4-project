@@ -1,15 +1,34 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import SneakersContext from './SneakersContext';
+import UserContext from './UserContext';
 
-function SneakerForm({ onSubmit }) {
+function SneakerForm({ onSubmit, sneakerToEdit, onCancel }) {
   const { setSneakers } = useContext(SneakersContext);
+  const { currentUser } = useContext(UserContext);
   const [formData, setFormData] = useState({
     brand: '',
     model: '',
     size: '',
     condition: '',
     photo_url: '',
+    user_id: currentUser.id,
   });
+  const [isFormVisible, setIsFormVisible] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (sneakerToEdit) {
+      setFormData({
+        brand: sneakerToEdit.brand,
+        model: sneakerToEdit.model,
+        size: sneakerToEdit.size,
+        condition: sneakerToEdit.condition,
+        photo_url: sneakerToEdit.photo_url,
+        user_id: sneakerToEdit.user_id || currentUser.id,
+      });
+    }
+  }, [sneakerToEdit, currentUser.id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,40 +38,54 @@ function SneakerForm({ onSubmit }) {
     });
   };
 
+  const handleSuccess = () => {
+    setIsFormVisible(false);
+    setLoading(false);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setLoading(true);
+    setError(null);
+
     try {
-      const response = await fetch('/sneakers', {
-        method: 'POST',
+      const url = sneakerToEdit ? `/sneakers/${sneakerToEdit.id}` : '/sneakers';
+      const method = sneakerToEdit ? 'PATCH' : 'POST';
+
+      const response = await fetch(url, {
+        method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, user_id: currentUser.id }),
       });
 
       if (response.ok) {
-        const newSneaker = await response.json();
-        setSneakers((prevSneakers) => [...prevSneakers, newSneaker]);
-        console.log('Sneaker added successfully!');
+        const updatedSneaker = await response.json();
+
+        setSneakers((prevSneakers) =>
+          prevSneakers.map((sneaker) =>
+            sneaker.id === updatedSneaker.id ? updatedSneaker : sneaker
+          )
+        );
+
+        handleSuccess();
+        console.log('Sneaker added/updated successfully!');
       } else {
-        console.error('Failed to add sneaker to the database');
+        const errorData = await response.json();
+        setError(errorData.message || 'Failed to add/update sneaker to the database');
       }
     } catch (error) {
+      setError('An unexpected error occurred.');
       console.error('Error:', error);
+    } finally {
+      setLoading(false);
     }
-
-    setFormData({
-      brand: '',
-      model: '',
-      size: '',
-      condition: '',
-      photo_url: '',
-    });
   };
 
   return (
-    <form className="sign-up-form" onSubmit={handleSubmit}>
+    <form className="sneaker-form" onSubmit={handleSubmit}>
       <label>
         Brand:
         <input
@@ -103,9 +136,15 @@ function SneakerForm({ onSubmit }) {
           className="form-input"
         />
       </label>
-      <button type="submit" className="form-button">
-        Submit
+      {error && <p className="error-message">{error}</p>}
+      <button type="submit" className="form-button" disabled={loading}>
+        {loading ? 'Loading...' : sneakerToEdit ? 'Update' : 'Submit'}
       </button>
+      {sneakerToEdit && (
+        <button type="button" onClick={onCancel} className="form-button" disabled={loading}>
+          Cancel
+        </button>
+      )}
     </form>
   );
 }
