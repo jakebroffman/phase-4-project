@@ -3,12 +3,11 @@ import SignInPage from './SignInPage';
 import UserContext from './UserContext';
 
 function SignOutPage() {
-
-  const { setIsLoggedIn, isLoggedIn, setCurrentUser, currentUser } = useContext(UserContext);
+  const { setIsLoggedIn, isLoggedIn, setCurrentUser } = useContext(UserContext);
 
   const handleLogOutClick = () => {
     fetch('/logout', {
-      method: 'POST', 
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -19,7 +18,6 @@ function SignOutPage() {
           setCurrentUser(null);
         } else {
           console.error('Failed to log out');
-          console.log(currentUser)
         }
       })
       .catch((error) => {
@@ -31,15 +29,16 @@ function SignOutPage() {
     <div className="sign-out">
       {isLoggedIn ? (
         <>
-        <p>Farewell! We hope to see you again soon.</p>
-        <button onClick={handleLogOutClick}>Log Out</button>
-      </>
+          <p className="farewell-message">Farewell! We hope to see you again soon.</p>
+          <button className="logout-button" onClick={handleLogOutClick}>
+            Log Out
+          </button>
+        </>
       ) : (
-       <SignInPage />
+        <SignInPage />
       )}
     </div>
   );
 }
 
 export default SignOutPage;
-<SignInPage />

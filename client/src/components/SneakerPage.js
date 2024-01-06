@@ -6,10 +6,13 @@ import UserContext from './UserContext';
 
 function SneakerPage() {
   const { sneakers, setSneakers } = useContext(SneakersContext);
-  const { isLoggedIn, currentUser } = useContext(UserContext);
+  const { isLoggedIn, currentUser, isLoading } = useContext(UserContext);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
   const [sneakerToEdit, setSneakerToEdit] = useState(null);
+
+  console.log('isLoggedIn:', isLoggedIn);
+  console.log('currentUser:', currentUser);
 
   const toggleEditForm = (sneaker) => {
     setIsFormVisible(false);
@@ -26,17 +29,18 @@ function SneakerPage() {
         },
         body: JSON.stringify(editedSneaker),
       });
-
+  
       if (response.ok) {
         const updatedSneaker = await response.json();
-
+  
         setSneakers((prevSneakers) =>
           prevSneakers.map((sneaker) =>
             sneaker.id === updatedSneaker.id ? updatedSneaker : sneaker
           )
         );
-
-        
+  
+        setIsEditFormVisible(false); 
+  
         console.log('Sneaker updated successfully!');
       } else {
         console.error('Failed to update sneaker');
@@ -58,13 +62,16 @@ function SneakerPage() {
           user_id: currentUser.id,
         }),
       });
-
+  
       if (response.ok) {
         const createdSneaker = await response.json();
-        setSneakers((prevSneakers) => [...prevSneakers, createdSneaker]);
-        setIsFormVisible(false);
+        setSneakers((prevSneakers) => {
+          console.log('Updated Sneakers State:', [...prevSneakers, createdSneaker]);
+          return [...prevSneakers, createdSneaker];
+        });
+        setIsFormVisible(!isFormVisible);
         setIsEditFormVisible(!isEditFormVisible);
-        console.log('Sneaker added successfully!');
+        console.log('Sneaker added successfully!');        
       } else {
         console.error('Failed to add sneaker to the database');
       }
@@ -72,18 +79,21 @@ function SneakerPage() {
       console.error('Error:', error);
     }
   };
+  
 
   const handleDeleteSneaker = async (sneakerId) => {
     try {
       const response = await fetch(`/sneakers/${sneakerId}`, {
         method: 'DELETE',
       });
-
+  
+      console.log('Response:', response);
+  
       if (response.ok) {
         setSneakers((prevSneakers) =>
           prevSneakers.filter((sneaker) => sneaker.id !== sneakerId)
         );
-
+  
         console.log('Sneaker deleted successfully!');
       } else {
         console.error('Failed to delete sneaker');
@@ -92,13 +102,14 @@ function SneakerPage() {
       console.error('Error:', error);
     }
   };
+  
 
   return (
     <div>
-      <h2>All Sneakers</h2>
+      <h2 className="sneaker-page-heading">All Sneakers</h2>
       {isLoggedIn && (
         <>
-          <button onClick={() => setIsFormVisible(!isFormVisible)}>
+          <button className='button' onClick={() => setIsFormVisible(!isFormVisible)}>
             Add Sneaker to the Database
           </button>
           {isFormVisible && (
@@ -113,7 +124,7 @@ function SneakerPage() {
         </>
       )}
 
-      <div className="sneaker-list">
+<div className="sneaker-list">
         {sneakers.map((sneaker) => (
           <div key={sneaker.id} className="sneaker-card">
             <Link to={`/sneakers/${sneaker.id}`}>

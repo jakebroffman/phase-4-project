@@ -40,7 +40,7 @@ function SignInPage() {
 
   return (
     <div className="sign-in">
-      <div className="sign-in-form">
+      <div className="form">
         <h2>Sign In</h2>
         {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
         <form onSubmit={handleFormSubmit}>

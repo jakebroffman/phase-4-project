@@ -73,7 +73,7 @@ code {
   text-align: center;
   margin: 20px;
   width: 300px; 
-  height: 400px;
+  height: 550px;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -113,8 +113,8 @@ code {
   margin-top: 20px;
 }
 
-.sign-in-form {
-  max-width: 300px;
+.form {
+  max-width: 700px;
   margin: auto;
   padding: 20px;
   background-color: #fff;
@@ -123,20 +123,20 @@ code {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.sign-in-form h2 {
+.form h2 {
   font-size: 20px;
   color: #333;
   margin-bottom: 16px;
 }
 
-.sign-in-form label {
+.form label {
   display: block;
   font-size: 16px;
   color: #333;
   margin-bottom: 8px;
 }
 
-.sign-in-form input {
+.form input {
   width: 100%;
   padding: 10px;
   font-size: 14px;
@@ -154,6 +154,8 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  display: block;
+  margin: auto;
 }
 
 .sign-in-form button:hover {
@@ -273,4 +275,70 @@ button {
   text-align: center;
   font-size: 2rem; 
   text-decoration: underline;
+}
+
+.profile {
+  text-align: center;
+}
+
+.profile-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin: 20px auto;
+  max-width: 300px;
+}
+
+.profile-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 50%;
+}
+
+.profile-card p {
+  margin: 10px 0;
+}
+
+.edit-profile-form label {
+  display: block;
+  margin: 10px 0;
+}
+
+.edit-profile-form input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  box-sizing: border-box;
+}
+
+.edit-profile-form button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-profile-form button.cancel {
+  background-color: #f44336;
+}
+
+.sign-out {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.farewell-message {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.logout-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #f00; 
+  color: #fff; 
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
 }

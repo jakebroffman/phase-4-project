@@ -1,6 +1,16 @@
 class UsersController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:create, :update, :check_authentication]
   before_action :set_user, only: [:update, :destroy]
-  skip_before_action :authenticate_user!, only: [:create]
+ 
+
+  def check_authentication
+    if current_user
+      render json: current_user
+    else
+      head :unauthorized
+    end
+  end
+
 
   def show
     @user = User.find_by(id: session[:user_id])
@@ -35,13 +45,21 @@ class UsersController < ApplicationController
 
   private
 
+
   def set_user
     @user = User.find_by(id: session[:user_id])
   end
 
+  # def user_params
+  #   permitted_params = [:username, :email, :profile_photo_url]
+  #   permitted_params << :password if action_name == 'create'
+  #   params.require(:user).permit(permitted_params)
+  # end
+
   def user_params
     permitted_params = [:username, :email, :profile_photo_url]
-    permitted_params << :password if action_name == 'create'
+    permitted_params << :password if params[:user][:password].present?
     params.require(:user).permit(permitted_params)
   end
+  
 end

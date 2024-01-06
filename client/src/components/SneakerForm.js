@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import SneakersContext from './SneakersContext';
 import UserContext from './UserContext';
 
-function SneakerForm({ onSubmit, sneakerToEdit, onCancel }) {
+function SneakerForm({ onSubmit, sneakerToEdit, onCancel, setIsFormVisible }) {
   const { setSneakers } = useContext(SneakersContext);
   const { currentUser } = useContext(UserContext);
   const [formData, setFormData] = useState({
@@ -13,12 +13,13 @@ function SneakerForm({ onSubmit, sneakerToEdit, onCancel }) {
     photo_url: '',
     user_id: currentUser.id,
   });
-  const [isFormVisible, setIsFormVisible] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     if (sneakerToEdit) {
+      console.log('sneakerToEdit:', sneakerToEdit);
+      console.log('sneakerToEdit.id:', sneakerToEdit.id);
       setFormData({
         brand: sneakerToEdit.brand,
         model: sneakerToEdit.model,
@@ -38,21 +39,43 @@ function SneakerForm({ onSubmit, sneakerToEdit, onCancel }) {
     });
   };
 
-  const handleSuccess = () => {
-    setIsFormVisible(false);
+  const handleSuccess = (updatedSneaker) => {
     setLoading(false);
+    setFormData({
+      brand: '',
+      model: '',
+      size: '',
+      condition: '',
+      photo_url: '',
+      user_id: currentUser.id,
+    });
+  
+    setSneakers((prevSneakers) => {
+      if (sneakerToEdit) {
+        return prevSneakers.map((sneaker) =>
+          sneaker.id === updatedSneaker.id ? updatedSneaker : sneaker
+        );
+      } else {
+        return [...prevSneakers, updatedSneaker];
+      }
+    });
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
     setError(null);
-
+  
     try {
-      const url = sneakerToEdit ? `/sneakers/${sneakerToEdit.id}` : '/sneakers';
-      const method = sneakerToEdit ? 'PATCH' : 'POST';
+      const isEditing = sneakerToEdit && sneakerToEdit.id;
+      const url = isEditing ? `/sneakers/${sneakerToEdit.id}` : '/sneakers';
+      const method = isEditing ? 'PATCH' : 'POST';
 
+      console.log('isEditing:', isEditing);
+      console.log('url:', url);
+      console.log('method:', method);
+  
       const response = await fetch(url, {
         method,
         headers: {
@@ -60,17 +83,10 @@ function SneakerForm({ onSubmit, sneakerToEdit, onCancel }) {
         },
         body: JSON.stringify({ ...formData, user_id: currentUser.id }),
       });
-
+  
       if (response.ok) {
         const updatedSneaker = await response.json();
-
-        setSneakers((prevSneakers) =>
-          prevSneakers.map((sneaker) =>
-            sneaker.id === updatedSneaker.id ? updatedSneaker : sneaker
-          )
-        );
-
-        handleSuccess();
+        handleSuccess(updatedSneaker);
         console.log('Sneaker added/updated successfully!');
       } else {
         const errorData = await response.json();
@@ -83,9 +99,10 @@ function SneakerForm({ onSubmit, sneakerToEdit, onCancel }) {
       setLoading(false);
     }
   };
+  
 
   return (
-    <form className="sneaker-form" onSubmit={handleSubmit}>
+    <form className="form" onSubmit={handleSubmit}>
       <label>
         Brand:
         <input

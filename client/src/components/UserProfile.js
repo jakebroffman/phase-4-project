@@ -58,7 +58,7 @@ function UserProfile() {
         <p>Email: {currentUser.email}</p>
       </div>
       {isEditing ? (
-        <div>
+        <div className="edit-profile-form">
           <label>
             Username:
             <input
@@ -90,7 +90,9 @@ function UserProfile() {
           </label>
           <br />
           <button onClick={handleSaveEdit}>Save</button>
-          <button onClick={handleCancelEdit}>Cancel</button>
+          <button className="cancel" onClick={handleCancelEdit}>
+            Cancel
+          </button>
         </div>
       ) : (
         <button onClick={handleEditClick}>Edit Profile</button>

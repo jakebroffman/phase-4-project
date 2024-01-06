@@ -1,6 +1,7 @@
 class SneakersController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:index]
   before_action :set_sneaker, only: [:show, :update, :destroy, :custom_show]
-  before_action :authenticate_user!, only: [:destroy]
+  
 
   def index
     @sneakers = Sneaker.all
@@ -24,8 +25,10 @@ class SneakersController < ApplicationController
   end
 
   def update
-    if save_and_render_response(@sneaker)
+    if @sneaker.update(sneaker_params)
       render json: @sneaker
+    else
+      render json: { errors: @sneaker.errors.full_messages }, status: :unprocessable_entity
     end
   end
 

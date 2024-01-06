@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get '/sneakers/:id', to: 'sneakers#custom_show', as: 'custom_sneaker_show'
   post '/login', to: 'sessions#login'
   post '/logout', to: 'sessions#logout'
+  get '/check-authentication', to: 'users#check_authentication'
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
