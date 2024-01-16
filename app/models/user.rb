@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   has_secure_password
   has_many :reviews
-  has_many :sneakers
+  has_many :my_sneakers, foreign_key: "user_id", class_name: "Sneaker"
   has_many :sneakers, through: :reviews
 
   validates :username, presence: true, uniqueness: { scope: :id, message: "Username is already taken" }, on: :create

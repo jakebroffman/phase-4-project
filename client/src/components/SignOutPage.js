@@ -16,6 +16,8 @@ function SignOutPage() {
         if (response.ok) {
           setIsLoggedIn(!isLoggedIn);
           setCurrentUser(null);
+          sessionStorage.removeItem('isLoggedIn');
+          sessionStorage.removeItem('currentUser');
         } else {
           console.error('Failed to log out');
         }

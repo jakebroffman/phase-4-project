@@ -333,6 +333,19 @@ button {
   margin-bottom: 10px;
 }
 
+img {
+  position: relative;
+  width: 200px; 
+  height: 200px; 
+  margin: 20px; 
+  border: 10px solid #fff; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  background: #fff; 
+  padding: 20px; 
+  border-radius: 8px; 
+  object-fit: cover;
+}
+
 .logout-button {
   padding: 10px 20px;
   font-size: 16px;
@@ -342,3 +355,27 @@ button {
   cursor: pointer;
   border-radius: 5px;
 }
+
+.error-container {
+  border: 1px solid #ff6347; 
+  background-color: #ffe4e1; 
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.error-message {
+  color: #ff6347; 
+  font-weight: bold;
+}
+
+.error-list {
+  list-style-type: disc;
+  margin: 0;
+  padding: 0;
+}
+
+.error-item {
+  margin-left: 20px;
+}
+

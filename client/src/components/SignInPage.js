@@ -11,7 +11,7 @@ function SignInPage() {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    
+
     setErrorMessage('');
 
     fetch('/login', {
@@ -30,6 +30,9 @@ function SignInPage() {
       .then((data) => {
         setCurrentUser(data);
         setIsLoggedIn(true);
+        sessionStorage.setItem('isLoggedIn', true);
+        sessionStorage.setItem('currentUser', JSON.stringify(data));
+
         navigate('/');
       })
       .catch((error) => {

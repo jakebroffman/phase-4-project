@@ -1,24 +1,9 @@
 class UsersController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:create, :update, :check_authentication]
+  skip_before_action :authenticate_user, only: [:create]
   before_action :set_user, only: [:update, :destroy]
  
-
-  def check_authentication
-    if current_user
-      render json: current_user
-    else
-      head :unauthorized
-    end
-  end
-
-
   def show
-    @user = User.find_by(id: session[:user_id])
-    if @user
-      render json: @user
-    else
-      render json: { error: "Not authorized" }, status: :unauthorized
-    end
+    render json: @current_user
   end
 
   def create
@@ -31,9 +16,15 @@ class UsersController < ApplicationController
   end
 
   def update
+    if user_params_empty?
+      render json: { errors: ['All fields must be filled'] }, status: :unprocessable_entity
+      return
+    end
+  
     if @user.update(user_params)
       render json: @user
     else
+      puts "Update failed. Errors: #{user.errors.full_messages.join(', ')}"
       render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
     end
   end
@@ -50,11 +41,9 @@ class UsersController < ApplicationController
     @user = User.find_by(id: session[:user_id])
   end
 
-  # def user_params
-  #   permitted_params = [:username, :email, :profile_photo_url]
-  #   permitted_params << :password if action_name == 'create'
-  #   params.require(:user).permit(permitted_params)
-  # end
+  def user_params_empty?
+    user_params.values.all?(&:blank?)
+  end
 
   def user_params
     permitted_params = [:username, :email, :profile_photo_url]
@@ -63,3 +52,4 @@ class UsersController < ApplicationController
   end
   
 end
+

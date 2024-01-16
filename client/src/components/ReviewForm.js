@@ -6,6 +6,7 @@ function ReviewForm({ sneakerId, editReviewData, onCancel }) {
   const [formData, setFormData] = useState({
     rating: '',
     comment: '',
+    sneaker_id: sneakerId, 
   });
   const [error, setError] = useState(null);
 
@@ -14,12 +15,17 @@ function ReviewForm({ sneakerId, editReviewData, onCancel }) {
       setFormData({
         rating: String(editReviewData.rating),
         comment: editReviewData.comment,
+        sneaker_id: sneakerId, 
       });
     }
-  }, [editReviewData]);
+  }, [editReviewData, sneakerId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (name === 'sneaker_id') {
+      return;
+    }
+
     setFormData({
       ...formData,
       [name]: value,
@@ -28,14 +34,15 @@ function ReviewForm({ sneakerId, editReviewData, onCancel }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setError(null);
+  
     try {
       const url = editReviewData
         ? `/reviews/${editReviewData.id}`
         : `/sneakers/${sneakerId}/reviews`;
-
+  
       const method = editReviewData ? 'PATCH' : 'POST';
-
+  
       const response = await fetch(url, {
         method,
         headers: {
@@ -43,10 +50,10 @@ function ReviewForm({ sneakerId, editReviewData, onCancel }) {
         },
         body: JSON.stringify(formData),
       });
-
+  
       if (response.ok) {
         const updatedReview = await response.json();
-
+  
         setSneakers((prevSneakers) =>
           prevSneakers.map((sneaker) =>
             sneaker.id === sneakerId
@@ -61,29 +68,48 @@ function ReviewForm({ sneakerId, editReviewData, onCancel }) {
               : sneaker
           )
         );
-
+  
         setFormData({
           rating: '',
           comment: '',
+          sneaker_id: sneakerId,
         });
-
+  
         onCancel();
-
+  
         console.log('Review added/updated successfully!');
       } else {
         const errorData = await response.json();
-        setError(errorData.message || 'Failed to add/update review');
+        if (response.status === 422) {
+          const validationErrors = errorData.errors;
+          setError(Object.values(validationErrors).join(', '));
+        } else {
+          setError(errorData.message || 'Failed to add/update review');
+        }
       }
     } catch (error) {
       console.error('Error:', error);
       setError('An unexpected error occurred.');
+    } finally {
     }
   };
 
   return (
     <div>
-      {error && <p className="error-message">{error}</p>}
+      {error && (
+        <div className="error-container">
+          <p className="error-message">Error:</p>
+          <ul className="error-list">
+            {error.split(', ').map((errorMsg, index) => (
+              <li key={index} className="error-item">
+                {errorMsg}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <form className="review-form" onSubmit={handleSubmit}>
+        <input type="hidden" name="sneaker_id" value={sneakerId} readOnly />
         <label>
           Rating:
           <input

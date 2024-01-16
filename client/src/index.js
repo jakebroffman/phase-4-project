@@ -1,17 +1,28 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React, { useState } from 'react';
+import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
+import UserContext from './components/UserContext';
+import SneakersContext from './components/SneakersContext';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const RootComponent = () => {
+  const [sneakers, setSneakers] = useState([]); 
+  const [currentUser, setCurrentUser] = useState({}); 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+  return (
+    <React.StrictMode>
+      <SneakersContext.Provider value={{ sneakers, setSneakers }}>
+        <UserContext.Provider value={{ currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn }}>
+          <App />
+        </UserContext.Provider>
+      </SneakersContext.Provider>
+    </React.StrictMode>
+  );
+};
+
+const root = createRoot(document.getElementById('root'));
+root.render(<RootComponent />);
+
 reportWebVitals();

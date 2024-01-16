@@ -1,5 +1,5 @@
 class SneakersController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:index]
+  skip_before_action :authenticate_user, only: [:index]
   before_action :set_sneaker, only: [:show, :update, :destroy, :custom_show]
   
 
@@ -17,7 +17,7 @@ class SneakersController < ApplicationController
   end
 
   def create
-    @sneaker = current_user.sneakers.build(sneaker_params)
+    @sneaker = @current_user.sneakers.build(sneaker_params)
 
     if save_and_render_response(@sneaker)
       render json: @sneaker, status: :created

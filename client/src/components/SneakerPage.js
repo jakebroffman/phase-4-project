@@ -6,7 +6,7 @@ import UserContext from './UserContext';
 
 function SneakerPage() {
   const { sneakers, setSneakers } = useContext(SneakersContext);
-  const { isLoggedIn, currentUser, isLoading } = useContext(UserContext);
+  const { isLoggedIn, currentUser } = useContext(UserContext);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
   const [sneakerToEdit, setSneakerToEdit] = useState(null);

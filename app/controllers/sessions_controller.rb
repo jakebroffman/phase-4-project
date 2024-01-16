@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-    before_action :authenticate_user!, only: :logout
+    before_action :authenticate_user, only: :logout
   
     def login
       user = User.find_by(username: params[:username])

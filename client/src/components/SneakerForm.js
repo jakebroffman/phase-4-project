@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import SneakersContext from './SneakersContext';
 import UserContext from './UserContext';
 
-function SneakerForm({ onSubmit, sneakerToEdit, onCancel, setIsFormVisible }) {
+function SneakerForm({ sneakerToEdit, onCancel }) {
   const { setSneakers } = useContext(SneakersContext);
   const { currentUser } = useContext(UserContext);
   const [formData, setFormData] = useState({
@@ -14,12 +14,11 @@ function SneakerForm({ onSubmit, sneakerToEdit, onCancel, setIsFormVisible }) {
     user_id: currentUser.id,
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [signupSuccess, setSignupSuccess] = useState(false);
+  const [errorMessages, setErrorMessages] = useState([]);
 
   useEffect(() => {
     if (sneakerToEdit) {
-      console.log('sneakerToEdit:', sneakerToEdit);
-      console.log('sneakerToEdit.id:', sneakerToEdit.id);
       setFormData({
         brand: sneakerToEdit.brand,
         model: sneakerToEdit.model,
@@ -49,7 +48,7 @@ function SneakerForm({ onSubmit, sneakerToEdit, onCancel, setIsFormVisible }) {
       photo_url: '',
       user_id: currentUser.id,
     });
-  
+
     setSneakers((prevSneakers) => {
       if (sneakerToEdit) {
         return prevSneakers.map((sneaker) =>
@@ -59,23 +58,20 @@ function SneakerForm({ onSubmit, sneakerToEdit, onCancel, setIsFormVisible }) {
         return [...prevSneakers, updatedSneaker];
       }
     });
+
+    setSignupSuccess(true);
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
-  
+    setErrorMessages([]);
+
     try {
       const isEditing = sneakerToEdit && sneakerToEdit.id;
       const url = isEditing ? `/sneakers/${sneakerToEdit.id}` : '/sneakers';
       const method = isEditing ? 'PATCH' : 'POST';
 
-      console.log('isEditing:', isEditing);
-      console.log('url:', url);
-      console.log('method:', method);
-  
       const response = await fetch(url, {
         method,
         headers: {
@@ -83,86 +79,116 @@ function SneakerForm({ onSubmit, sneakerToEdit, onCancel, setIsFormVisible }) {
         },
         body: JSON.stringify({ ...formData, user_id: currentUser.id }),
       });
-  
+
       if (response.ok) {
         const updatedSneaker = await response.json();
         handleSuccess(updatedSneaker);
         console.log('Sneaker added/updated successfully!');
       } else {
         const errorData = await response.json();
-        setError(errorData.message || 'Failed to add/update sneaker to the database');
+        if (response.status === 422) {
+          const validationErrors = errorData.errors;
+          setErrorMessages(Object.values(validationErrors));
+        } else {
+          setErrorMessages([errorData.message || 'Failed to add/update sneaker to the database']);
+        }
       }
     } catch (error) {
-      setError('An unexpected error occurred.');
+      setErrorMessages(['An unexpected error occurred.']);
       console.error('Error:', error);
     } finally {
       setLoading(false);
     }
   };
-  
 
   return (
-    <form className="form" onSubmit={handleSubmit}>
-      <label>
-        Brand:
-        <input
-          type="text"
-          name="brand"
-          value={formData.brand}
-          onChange={handleChange}
-          className="form-input"
-        />
-      </label>
-      <label>
-        Model:
-        <input
-          type="text"
-          name="model"
-          value={formData.model}
-          onChange={handleChange}
-          className="form-input"
-        />
-      </label>
-      <label>
-        Size:
-        <input
-          type="text"
-          name="size"
-          value={formData.size}
-          onChange={handleChange}
-          className="form-input"
-        />
-      </label>
-      <label>
-        Condition:
-        <input
-          type="text"
-          name="condition"
-          value={formData.condition}
-          onChange={handleChange}
-          className="form-input"
-        />
-      </label>
-      <label>
-        Photo URL:
-        <input
-          type="text"
-          name="photo_url"
-          value={formData.photo_url}
-          onChange={handleChange}
-          className="form-input"
-        />
-      </label>
-      {error && <p className="error-message">{error}</p>}
-      <button type="submit" className="form-button" disabled={loading}>
-        {loading ? 'Loading...' : sneakerToEdit ? 'Update' : 'Submit'}
-      </button>
-      {sneakerToEdit && (
-        <button type="button" onClick={onCancel} className="form-button" disabled={loading}>
-          Cancel
-        </button>
+    <div>
+      {signupSuccess ? (
+        <div className="success-message">
+          <p>Sneaker added/updated successfully!</p>
+        </div>
+      ) : (
+        <form className="form" onSubmit={handleSubmit}>
+          <label>
+            Brand:
+            <input
+              type="text"
+              name="brand"
+              value={formData.brand}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </label>
+
+          <label>
+            Model:
+            <input
+              type="text"
+              name="model"
+              value={formData.model}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </label>
+
+          <label>
+            Size:
+            <input
+              type="text"
+              name="size"
+              value={formData.size}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </label>
+
+          <label>
+            Condition:
+            <input
+              type="text"
+              name="condition"
+              value={formData.condition}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </label>
+
+          <label>
+            Photo URL:
+            <input
+              type="text"
+              name="photo_url"
+              value={formData.photo_url}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </label>
+
+          {errorMessages.length > 0 && (
+            <div className="error-container">
+              <p className="error-message">Error:</p>
+              <ul className="error-list">
+                {errorMessages.map((errorMsg, index) => (
+                  <li key={index} className="error-item">
+                    {errorMsg}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <button type="submit" className="form-button" disabled={loading}>
+            {loading ? 'Loading...' : sneakerToEdit ? 'Update' : 'Submit'}
+          </button>
+
+          {sneakerToEdit && (
+            <button type="button" onClick={onCancel} className="form-button" disabled={loading}>
+              Cancel
+            </button>
+          )}
+        </form>
       )}
-    </form>
+    </div>
   );
 }
 

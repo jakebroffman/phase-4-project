@@ -13,7 +13,6 @@ class ReviewsController < ApplicationController
   
     def create
       @review = @current_user.reviews.build(review_params)
-      @review.sneaker_id = params[:sneaker_id]
     
       if @review.save
         render json: @review, status: :created
@@ -43,7 +42,7 @@ class ReviewsController < ApplicationController
     end
   
     def review_params
-      params.require(:review).permit(:rating, :comment)
+      params.require(:review).permit(:rating, :comment, :sneaker_id)
     end
   end
   
